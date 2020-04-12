@@ -1,4 +1,11 @@
 #!/usr/bin/env python
+# Completed by :
+
+# Alvin Poudel Sharma
+# Id: 1001555230
+
+
+
 
 # Written by Chris Conly based on C++
 # code provided by Dr. Vassilis Athitsos
@@ -24,25 +31,48 @@ def oneMoveGame(currentGame):
     currentGame.gameFile.close()
 
 
-def interactiveGame(currentGame):
+def interactiveGame(currentGame, human_first):
+
+    play = True
+    ai = 0
+    human = 0
+    if human_first:
+        human = 1
+        ai =2
+    else:
+        human =2
+        ai =1
 
 
+    while(play):
+        if currentGame.pieceCount == 42:  # Is the board full?
+            print 'BOARD FULL\n\nGame Over!\n'
+            sys.exit(0)
 
+            # for a computer player justy calls the aiplay method
+        if currentGame.currentTurn == ai:
+            currentGame.aiPlay()
+            print 'Game state after move:'
+            currentGame.printGameBoard()
+            currentGame.checkPieceCount()
+            currentGame.countScore()
+            print('Score: Player 1 = %d, Player 2 = %d\n' % (currentGame.player1Score, currentGame.player2Score))
 
+            currentGame.printGameBoardToFile()
+            currentGame.gameFile.close()
+            currentGame.gameFile = open('computer.txt', 'w')
+        # for a human player justy calls the humanplay method
+        if currentGame.currentTurn == human:
+            currentGame.humanPlay()
+            print 'Game state after move:'
+            currentGame.printGameBoard()
+            currentGame.checkPieceCount()
+            currentGame.countScore()
+            print('Score: Player 1 = %d, Player 2 = %d\n' % (currentGame.player1Score, currentGame.player2Score))
 
-
-
-
-
-
-
-
-
-
-
-
-    # Fill me in
-    sys.exit('Interactive mode is currently not implemented')
+            currentGame.printGameBoardToFile()
+            currentGame.gameFile.close()
+            currentGame.gameFile = open('human.txt', 'w')
 
 
 def main(argv):
@@ -84,7 +114,24 @@ def main(argv):
     print('Score: Player 1 = %d, Player 2 = %d\n' % (currentGame.player1Score, currentGame.player2Score))
 
     if game_mode == 'interactive':
-        interactiveGame(currentGame) # Be sure to pass whatever else you need from the command line
+        human_first = False
+        turn = argv[3]
+        outFile = 'blank'
+        if turn == 'human-next':
+            human_first = True
+            outFile = 'human.txt'
+        else:
+            outFile = 'computer.txt'
+
+        try:
+            currentGame.gameFile = open(outFile, 'w')
+        except:
+            sys.exit('Error opening output file.')
+        interactiveGame(currentGame, human_first) # Be sure to pass whatever else you need from the command line
+
+
+
+
     else: # game_mode == 'one-move'
         # Set up the output file
         outFile = argv[3]
