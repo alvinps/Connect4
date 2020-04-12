@@ -25,6 +25,22 @@ def oneMoveGame(currentGame):
 
 
 def interactiveGame(currentGame):
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     # Fill me in
     sys.exit('Interactive mode is currently not implemented')
 
@@ -38,12 +54,13 @@ def main(argv):
         sys.exit(2)
 
     game_mode, inFile = argv[1:3]
-
+    depth = int(argv[4])
     if not game_mode == 'interactive' and not game_mode == 'one-move':
         print('%s is an unrecognized game mode' % game_mode)
         sys.exit(2)
 
     currentGame = maxConnect4Game() # Create a game
+    currentGame.depth = depth
 
     # Try to open the input file
     try:
